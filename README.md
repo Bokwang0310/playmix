@@ -95,6 +95,10 @@ DB에서 관리?
 ]
 ```
 
+## What I learned during this project
+
+[lesson.md](./lesson.md)
+
 ## Deployment
 
 First, build your app for production:
