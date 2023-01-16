@@ -12,9 +12,13 @@ export default function Index() {
   return (
     <nav>
       <ul>
-        {playLists.map(({ id, title }) => (
+        {playLists.map(({ id, title, description, owner }) => (
           <li key={id}>
-            <Link to={`/playlists/${id}`}>Title: {title}</Link>
+            <Link to={`/playlists/${id}`}>
+              Title: {title}, Owner: {owner}
+            </Link>
+            <br />
+            Desc: {description}
           </li>
         ))}
       </ul>
