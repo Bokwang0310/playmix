@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default function Player({ url }: Props) {
-  return <ReactPlayer url={url} />;
+  return <ReactPlayer url={url + "&origin=http://localhost:3000"} />;
 }

@@ -101,3 +101,37 @@ Error: Element type is invalid: expected a string (for built-in components) or a
 에러는 해결했지만 이걸 전부 제대로 이해했는지는 모르겠다. 웹 생태계의 추상화 레벨이 너무 높아진 탓도 있는 것 같지만 근본적으로는, 내가 아직 기본이 많이 부족한 탓도 있는 것 같다.
 
 그나저나 왜 `.client.tsx` 설명 안 해주는지는 진짜 궁금하네
+
+# `entry.server.tsx`의 `handleRequest` 조건부 실행
+
+`handleRequest` 함수는 `isbot` 함수의 결과값이 참이면 `handleBotRequest`를, 거짓이면 `handleBrowserRequest`를 실행한다.
+
+하지만, 두 함수는 `renderToPipeableStream`의 두번째 인자로 들어가는 객체의 메소드 이름 하나만 다르므로 computed property name을 이용해 코드를 더 간단히 할 수 있다.
+
+```tsx
+// ...
+const { pipe, abort } = renderToPipeableStream(
+  <RemixServer context={remixContext} url={request.url} />,
+  {
+    [isbot(/* ... */) ? "onAllReady" : "onShellReady"]() {
+      // ...
+    },
+    // ...
+  }
+);
+// ...
+```
+
+# `renderToPipeableStream`과 css-in-js
+
+emotion과 styled-component와 같은 css-in-js 라이브러리들은 `renderToString`으로 얻은 html로부터 style 규칙을 추출해서 style 태그를 만들었다. 하지만, React 18에 추가된 [`renderToPipeableStream`](https://ko.reactjs.org/docs/react-dom-server.html#rendertopipeablestream)은 한번에 initial html을 얻을 수 없기 때문에 기존의 방식이 먹히지 않는다.
+
+현재 next.js와 remix에서는 `renderToPipeableStream`과 같은 streaming SSR을 지원하고 있지만 아직 많은 css-in-js 라이브러리들이 이에 대한 대응을 하지 못하고있다.
+
+따라서 많은 사람들이 React 18로 업그레이드하는 과정에서 css-in-js 라이브러리에 의해 불편을 겪고 있다. [#1(styled-component)](https://github.com/styled-components/styled-components/issues/3658), [#2(emotion)](https://github.com/emotion-js/emotion/issues/2800)
+
+리액트 팀은 React 18 업데이트에 맞춰 [스타일 라이브러리 업그레이드 가이드글](https://github.com/reactwg/react-18/discussions/110)을 내놓은 상태이지만 아직까지 제대로 된 방법은 나오지 않은 것 같다.
+
+따라서, 본 프로젝트에 MUI를 적용하기 위해서는 remix 기본 구조로 잡혀있는 streaming SSR을 포기하고 `renderToString`을 이용해야 할 것 같다.
+
+# Remix를 선택한 이유

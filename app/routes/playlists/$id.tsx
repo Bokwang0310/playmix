@@ -27,9 +27,7 @@ export default function Playlist() {
       <br />
       Links : {links.map((link) => `"${link}"`).join(", ")}
       <br />
-      {mounted ? (
-        <Player url="https://youtu.be/o8RiDh1jxck&origin=http://localhost:3000" />
-      ) : null}
+      {mounted ? <Player url="https://youtu.be/o8RiDh1jxck" /> : null}
     </div>
   );
 }
