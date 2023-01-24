@@ -1,9 +1,7 @@
-import { PassThrough } from "stream";
 import type { EntryContext } from "@remix-run/node";
 import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
-import isbot from "isbot";
-import { renderToPipeableStream } from "react-dom/server";
+import { renderToString } from "react-dom/server";
 
 import createEmotionServer from "@emotion/server/create-instance";
 import { CacheProvider } from "@emotion/react";
@@ -12,8 +10,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import createEmotionCache from "./createEmotionCache";
 import theme from "./theme";
-
-const ABORT_DELAY = 5000;
 
 export default function handleRequest(
   request: Request,
@@ -24,46 +20,36 @@ export default function handleRequest(
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
-  const isBot = isbot(request.headers.get("user-agent"));
+  const MuiRemixServer = () =>
+  (<CacheProvider value={cache}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RemixServer context={remixContext} url={request.url} />
+    </ThemeProvider>
+  </CacheProvider>)
 
-  return new Promise((resolve, reject) => {
-    let didError = false;
 
-    const { pipe, abort } = renderToPipeableStream(
-      <CacheProvider value={cache}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <RemixServer context={remixContext} url={request.url} />
-        </ThemeProvider>
-      </CacheProvider>,
-      {
-        [isBot ? "onAllReady" : "onShellReady"]() {
-          const body = new PassThrough();
+  const html = renderToString(<MuiRemixServer />);
+  const { styles } = extractCriticalToChunks(html);
 
-          console.log(body);
 
-          responseHeaders.set("Content-Type", "text/html");
+  let stylesHTML = '';
 
-          resolve(
-            new Response(body, {
-              headers: responseHeaders,
-              status: didError ? 500 : responseStatusCode,
-            })
-          );
+  styles.forEach(({ key, ids, css }) => {
+    const emotionKey = `${key} ${ids.join(' ')}`;
+    const newStyleTag = `<style data-emotion="${emotionKey}">${css}</style>`;
+    stylesHTML = `${stylesHTML}${newStyleTag}`;
+  });
 
-          pipe(body);
-        },
-        onShellError(error: unknown) {
-          reject(error);
-        },
-        onError(error: unknown) {
-          didError = true;
+  const markup = html.replace(
+    /<meta(\s)*name="emotion-insertion-point"(\s)*content="emotion-insertion-point"(\s)*\/>/,
+    `<meta name="emotion-insertion-point" content="emotion-insertion-point"/>${stylesHTML}`,
+  );
 
-          console.error(error);
-        },
-      }
-    );
+  responseHeaders.set('Content-Type', 'text/html');
 
-    setTimeout(abort, ABORT_DELAY);
+  return new Response(`<!DOCTYPE html>${markup}`, {
+    status: responseStatusCode,
+    headers: responseHeaders,
   });
 }

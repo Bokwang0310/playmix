@@ -1,5 +1,5 @@
 import { RemixBrowser } from "@remix-run/react";
-import { startTransition, StrictMode, useState, useMemo } from "react";
+import { startTransition, StrictMode, useState, useMemo, ReactNode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
 import { CacheProvider } from "@emotion/react";
@@ -11,7 +11,7 @@ import createEmotionCache from "./createEmotionCache";
 import theme from "./theme";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 function ClientCacheProvider({ children }: Props) {

@@ -133,5 +133,3 @@ emotion과 styled-component와 같은 css-in-js 라이브러리들은 `renderToS
 리액트 팀은 React 18 업데이트에 맞춰 [스타일 라이브러리 업그레이드 가이드글](https://github.com/reactwg/react-18/discussions/110)을 내놓은 상태이지만 아직까지 제대로 된 방법은 나오지 않은 것 같다.
 
 따라서, 본 프로젝트에 MUI를 적용하기 위해서는 remix 기본 구조로 잡혀있는 streaming SSR을 포기하고 `renderToString`을 이용해야 할 것 같다.
-
-# Remix를 선택한 이유
