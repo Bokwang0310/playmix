@@ -2,8 +2,11 @@ import { json } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { getPlaylists } from "../lib/api";
 
-import Stack from '@mui/material/Stack';
-
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 
 export const loader = async () => {
   const playLists = await getPlaylists();
@@ -12,9 +15,12 @@ export const loader = async () => {
 
 export default function Index() {
   const playLists = useLoaderData<typeof loader>();
+
+  console.log(playLists);
+
   return (
     <nav>
-      <ul>
+      {/*<ul>
         {playLists.map(({ id, title, description, owner }) => (
           <li key={id}>
             <Link to={`/playlists/${id}`}>
@@ -24,81 +30,59 @@ export default function Index() {
             Desc: {description}
           </li>
         ))}
-      </ul>
-      <Stack spacing={2}>{
-        itemData.map((item, index) => (
-          <img
-            key={index}
-            src={`${item.img}?w=248&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.title}
-            loading="lazy"
-          />
-        ))
-      }</Stack>
+        </ul>*/}
+      {tempImages.map((image, index) => (
+        <List
+          sx={{
+            width: "100%",
+            // maxWidth: 360,
+            bgcolor: "background.paper",
+          }}
+          key={index}
+        >
+          <ListItem alignItems="flex-start">
+            <img
+              src={`${image}?w=180&fit=crop&auto=format`}
+              srcSet={`${image}?w=180&fit=crop&auto=format&dpr=2 2x`}
+              loading="lazy"
+              style={{ paddingRight: "8px" }}
+            />
+            <ListItemText
+              style={{ paddingLeft: "8px" }}
+              primary={`Musics ${index}`}
+              secondary={
+                <>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    Author {index}
+                  </Typography>
+                  {` — Description for fake playlist and its number is ${index}`}
+                </>
+              }
+            />
+          </ListItem>
+          <Divider variant="middle" component="li" />
+        </List>
+      ))}
     </nav>
   );
 }
 
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-    author: '@bkristastucchio',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-    author: '@rollelflex_graphy726',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-    author: '@helloimnik',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-    author: '@nolanissac',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-    author: '@hjrc33',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-    author: '@arwinneil',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-    author: '@tjdragotta',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-    author: '@katie_wasserman',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-    author: '@silverdalex',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-    author: '@shelleypauls',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-    author: '@peterlaster',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-    author: '@southside_customs',
-  },
+const tempImages = [
+  "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
+  "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
+  "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+  "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
+  "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
+  "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
+  "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
+  "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
+  "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
+  "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
+  "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
+  "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
 ];

@@ -8,18 +8,18 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import { useContext } from "react"
-import { withEmotionCache } from '@emotion/react';
-import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
-import theme from './theme';
-import ClientStyleContext from './ClientStyleContext';
+import { useContext } from "react";
+import { withEmotionCache } from "@emotion/react";
+import { unstable_useEnhancedEffect as useEnhancedEffect } from "@mui/material";
+import theme from "./theme";
+import ClientStyleContext from "./ClientStyleContext";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "PlayMix",
-  viewport: "width=device-width,initial-scale=1",
+  viewport:
+    "width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0",
 });
-
 
 const Document = withEmotionCache((_, emotionCache) => {
   const clientStyleData = useContext(ClientStyleContext);
@@ -49,7 +49,10 @@ const Document = withEmotionCache((_, emotionCache) => {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
-        <meta name="emotion-insertion-point" content="emotion-insertion-point" />
+        <meta
+          name="emotion-insertion-point"
+          content="emotion-insertion-point"
+        />
       </head>
       <body>
         <Outlet />
@@ -62,5 +65,5 @@ const Document = withEmotionCache((_, emotionCache) => {
 });
 
 export default function App() {
-  return <Document />
+  return <Document />;
 }
