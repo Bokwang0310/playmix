@@ -8,18 +8,23 @@ type PlayList = {
 
 const playlists: PlayList[] = [
   {
-    id: "1",
-    owner: "1",
-    links: ["1", "2", "3"],
-    title: "1",
-    description: "11111",
+    id: "025jpHTOHR5Mqs_lwOdOr",
+    owner: "개죽이",
+    links: [
+      "https://youtu.be/M2k4mNy61XI",
+      "https://youtu.be/w4iQ7nWO6SM",
+      "https://youtu.be/ooZA5ONfUJE",
+      "https://youtu.be/LwtgRAge4B4",
+    ],
+    title: "검정치마의 여름",
+    description: "밝고 짧게 타올라라",
   },
   {
-    id: "2",
-    owner: "2",
-    links: ["2", "1", "3"],
-    title: "2",
-    description: "22222",
+    id: "Ov6KR2yrX6zHCB09dyMYc",
+    owner: "망망이",
+    links: ["https://youtu.be/m9NHyrQvmv0", "https://youtu.be/354aC64tAsc"],
+    title: "미노이와 고양이",
+    description: "설명란을 선택적으로 작성할 수 있게 해야할까",
   },
 ];
 

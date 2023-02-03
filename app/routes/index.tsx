@@ -3,7 +3,7 @@ import { useLoaderData, Link } from "@remix-run/react";
 import { getPlaylists } from "../lib/api";
 
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
@@ -31,19 +31,12 @@ export default function Index() {
           </li>
         ))}
         </ul>*/}
-      {tempImages.map((image, index) => (
-        <List
-          sx={{
-            width: "100%",
-            // maxWidth: 360,
-            bgcolor: "background.paper",
-          }}
-          key={index}
-        >
-          <ListItem alignItems="flex-start">
+      {tempYTImgs.map((image, index) => (
+        <List sx={{ width: "100%", bgcolor: "background.paper" }} key={index}>
+          <ListItemButton alignItems="flex-start">
             <img
-              src={`${image}?w=180&fit=crop&auto=format`}
-              srcSet={`${image}?w=180&fit=crop&auto=format&dpr=2 2x`}
+              src={`${image}&fit=crop&auto=format`}
+              srcSet={`${image}&fit=crop&auto=format&dpr=2 2x`}
               loading="lazy"
               style={{ paddingRight: "8px" }}
             />
@@ -64,7 +57,7 @@ export default function Index() {
                 </>
               }
             />
-          </ListItem>
+          </ListItemButton>
           <Divider variant="middle" component="li" />
         </List>
       ))}
@@ -72,17 +65,13 @@ export default function Index() {
   );
 }
 
-const tempImages = [
-  "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-  "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-  "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-  "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-  "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-  "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-  "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-  "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-  "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-  "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-  "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-  "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+const tempYTImgs = [
+  "https://i.ytimg.com/vi/FioeL1LIJiU/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLCXBAuPyxW98aCRNY5OcC5CfaM9eQ",
+  "https://i.ytimg.com/vi/RTbIijlydPE/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLDU80eA32yAwiFlk-zGTBhN9EDFRA",
+  "https://i.ytimg.com/vi/ZrgbG7exGtM/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLCEYiLq9BJM9fqukKLqRiio3jPoyQ",
+  "https://i.ytimg.com/vi/kpaumYCEwp8/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLDYnlujNUVfhwyAnZO7KRzR6fkwEQ",
+  "https://i.ytimg.com/vi/irXoGwjhjg4/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLBZE2jpc2B4AhtMM7yFhGPoEQlHCQ",
+  "https://i.ytimg.com/vi/Uj-HiUUfAT8/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAVdR8d-fy1ZokHCI6qCHHR4oqKNg",
+  "https://i.ytimg.com/vi/EKdsshckN1E/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLDhch7nIBhfLxi8MroFRCXKMT5m6g",
+  "https://i.ytimg.com/vi/mYveBG4Jis0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAIhCGAHYAQHiAQYIHRgGIAE=&rs=AOn4CLB00TNtL-chizmfXZv2feIJfZQxvw",
 ];
