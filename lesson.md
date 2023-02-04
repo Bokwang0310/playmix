@@ -133,3 +133,15 @@ emotion과 styled-component와 같은 css-in-js 라이브러리들은 `renderToS
 리액트 팀은 React 18 업데이트에 맞춰 [스타일 라이브러리 업그레이드 가이드글](https://github.com/reactwg/react-18/discussions/110)을 내놓은 상태이지만 아직까지 제대로 된 방법은 나오지 않은 것 같다.
 
 따라서, 본 프로젝트에 MUI를 적용하기 위해서는 remix 기본 구조로 잡혀있는 streaming SSR을 포기하고 `renderToString`을 이용해야 할 것 같다.
+
+**추가**
+
+streaming SSR과 css-in-js를 함께 사용할 수 있는 방법이 있긴 한 것 같다. [링크](https://shud.in/posts/ssr-streaming-and-css-in-js)
+
+[SSR 관련 emotion 공식 문서](https://emotion.sh/docs/ssr)를 살펴보면 일반적으로는 추가 설정 없이도 streaming SSR과 emotion을 함께 사용할 수 있다고 한다.
+
+> The default approach works with streaming and requires no additional configuration, but does not work with nth child or similar selectors.
+
+하지만 nth child와 같은 선택자를 이용하는 경우에는 `default approach`가 불가능하며 streaming SSR을 이용하지 못하는 `advanced approach`만 이용 가능하다고 한다.
+
+그런데 역시나 MUI에서는 emotion의 `advanced approach`가 필요하다고 한다. [참고](https://github.com/mui/material-ui/issues/33280)
