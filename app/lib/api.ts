@@ -1,4 +1,4 @@
-type PlayList = {
+export type Playlist = {
   id: string;
   owner: string;
   links: string[];
@@ -6,7 +6,7 @@ type PlayList = {
   description: string;
 };
 
-const playlists: PlayList[] = [
+const playlists: Playlist[] = [
   {
     id: "025jpHTOHR5Mqs_lwOdOr",
     owner: "개죽이",
@@ -29,4 +29,4 @@ const playlists: PlayList[] = [
 ];
 
 export const getPlaylists = async () =>
-  new Promise<PlayList[]>((resolve) => resolve(playlists));
+  new Promise<Playlist[]>((resolve) => resolve(playlists));
