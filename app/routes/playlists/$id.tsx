@@ -1,13 +1,13 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { useState, useEffect } from "react";
 
 import { styled } from "@mui/material/styles";
 
 import Player from "~/components/Player.client";
 import ChipTabs from "~/components/ChipTabs";
 import Playlists from "~/components/Playlists";
+import ClientOnly from "~/components/ClientOnly";
 import { getPlaylists } from "~/lib/api";
 
 const tempPlaylist = {
@@ -25,6 +25,7 @@ const tempPlaylist = {
 
 export const loader = async ({ params }: LoaderArgs) => {
   const playlists = await getPlaylists();
+
   // TODO: 주어진 id에 해당하는 플리를 찾지 못한 경우 제대로 핸들링
   const currentPlaylist =
     playlists.find(({ id }) => id === params.id) ?? tempPlaylist;
@@ -43,18 +44,12 @@ const PlayerContainer = styled("div")({
 export default function Playlist() {
   const { playlists, currentPlaylist } = useLoaderData<typeof loader>();
 
-  const [mounted, setMounted] = useState(false);
-  // const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Player 컴포넌트는 클라이언트 사이드에서만 사용 가능
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <>
       <PlayerContainer>
-        {mounted ? <Player url={currentPlaylist.links[0]} /> : null}
+        <ClientOnly>
+          {() => <Player url={currentPlaylist.links[0]} />}
+        </ClientOnly>
       </PlayerContainer>
       <ChipTabs links={currentPlaylist.links} />
       <Playlists playlists={playlists} />

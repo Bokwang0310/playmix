@@ -29,7 +29,7 @@ export default function Chips({ links }: Props) {
         value={value}
         variant="scrollable"
         scrollButtons="auto"
-        style={{
+        sx={{
           alignItems: "center",
           minHeight: "0px",
           padding: "16px 16px 0px 16px",
