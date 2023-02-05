@@ -1,11 +1,8 @@
-import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-type Props = {
-  links: string[];
-};
+import { getYoutubeVideoIdFromUrl } from "~/lib/utils";
 
 const ChipTab = styled(Tab)({
   textTransform: "none",
@@ -20,13 +17,19 @@ const ChipTab = styled(Tab)({
   fontFamily: "Roboto",
 });
 
-export default function Chips({ links }: Props) {
-  const [value, setValue] = useState(0);
+type Props = {
+  urls: string[];
+  currentIndex: number;
+};
 
+// TODO: 각 link마다 yt data api로 영상 제목을 받아와서 chip의 label로 사용
+// 또는 사용자에게 곡 이름을 입력하도록?
+
+export default function Chips({ urls, currentIndex }: Props) {
   return (
     <nav>
       <Tabs
-        value={value}
+        value={currentIndex}
         variant="scrollable"
         scrollButtons="auto"
         sx={{
@@ -34,11 +37,11 @@ export default function Chips({ links }: Props) {
           minHeight: "0px",
           padding: "16px 16px 0px 16px",
         }}
-        onChange={(_, value) => setValue(value)}
+        // onChange={(_, value) => setValue(value)}
         TabIndicatorProps={{ hidden: true }}
       >
-        {links.map((_, index) => (
-          <ChipTab key={index} label="Hello" />
+        {urls.map((url, index) => (
+          <ChipTab key={getYoutubeVideoIdFromUrl(url)} label={index} />
         ))}
       </Tabs>
     </nav>

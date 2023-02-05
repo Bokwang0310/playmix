@@ -2,9 +2,10 @@ import ReactPlayer from "react-player";
 
 type Props = {
   url: string;
+  handleEnded: () => void;
 };
 
-export default function Player({ url }: Props) {
+export default function Player({ url, handleEnded }: Props) {
   return (
     <ReactPlayer
       url={url + "&origin=http://localhost:3000"}
@@ -15,7 +16,9 @@ export default function Player({ url }: Props) {
         top: 0,
         left: 0,
       }}
-      // config={{ file: { forceAudio: true } }}
+      onEnded={handleEnded}
+      controls
+      playing
     />
   );
 }

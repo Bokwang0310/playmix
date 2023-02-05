@@ -64,7 +64,7 @@ DB에서 관리?
   {
     "id": "",
     "owner": "",
-    "links": [""],
+    "urls": [""],
     "title": "",
     "description": "",
     "likes?": 0,
@@ -89,7 +89,7 @@ DB에서 관리?
     "nickname": "",
     "playlists": [
       { "type": "owned", "id": "" },
-      { "type": "forked", "id": "", "links": [] }
+      { "type": "forked", "id": "", "urls": [] }
     ]
   }
 ]

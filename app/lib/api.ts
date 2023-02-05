@@ -1,7 +1,7 @@
 export type Playlist = {
   id: string;
   owner: string;
-  links: string[];
+  urls: string[];
   title: string;
   description: string;
 };
@@ -10,7 +10,7 @@ const playlists: Playlist[] = [
   {
     id: "025jpHTOHR5Mqs_lwOdOr",
     owner: "개죽이",
-    links: [
+    urls: [
       "https://youtu.be/M2k4mNy61XI",
       "https://youtu.be/w4iQ7nWO6SM",
       "https://youtu.be/ooZA5ONfUJE",
@@ -22,7 +22,7 @@ const playlists: Playlist[] = [
   {
     id: "Ov6KR2yrX6zHCB09dyMYc",
     owner: "망망이",
-    links: ["https://youtu.be/m9NHyrQvmv0", "https://youtu.be/354aC64tAsc"],
+    urls: ["https://youtu.be/m9NHyrQvmv0", "https://youtu.be/354aC64tAsc"],
     title: "미노이와 고양이",
     description: "설명란을 선택적으로 작성할 수 있게 해야할까",
   },

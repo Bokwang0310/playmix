@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -14,7 +15,7 @@ import { getPlaylists } from "~/lib/api";
 const tempPlaylist = {
   id: "025jpHTOHR5Mqs_lwOdOr",
   owner: "개죽이",
-  links: [
+  urls: [
     "https://youtu.be/M2k4mNy61XI",
     "https://youtu.be/w4iQ7nWO6SM",
     "https://youtu.be/ooZA5ONfUJE",
@@ -52,6 +53,7 @@ const PlayerSkeleton = styled(Skeleton)({
 
 export default function Playlist() {
   const { playlists, currentPlaylist } = useLoaderData<typeof loader>();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
     <>
@@ -59,10 +61,21 @@ export default function Playlist() {
         <ClientOnly
           fallback={<PlayerSkeleton animation="wave" variant="rectangular" />}
         >
-          {() => <Player url={currentPlaylist.links[0]} />}
+          {() => (
+            <Player
+              url={currentPlaylist.urls[currentIndex]}
+              handleEnded={() =>
+                setCurrentIndex((prev) => {
+                  // 마지막 곡이 끝나면 처음으로 다시 돌아감
+                  if (prev + 2 === playlists.length) return 0;
+                  return prev + 1;
+                })
+              }
+            />
+          )}
         </ClientOnly>
       </PlayerContainer>
-      <ChipTabs links={currentPlaylist.links} />
+      <ChipTabs currentIndex={currentIndex} urls={currentPlaylist.urls} />
       <Playlists playlists={playlists} />
     </>
   );
