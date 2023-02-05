@@ -11,7 +11,7 @@ export const loader = async () => {
   return json(playLists);
 };
 
-export default function Index() {
+export default function () {
   const playlists = useLoaderData<typeof loader>();
 
   return <Playlists playlists={playlists} />;

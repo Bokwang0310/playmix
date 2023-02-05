@@ -18,7 +18,7 @@ const Image = styled("img")({
   paddingRight: "8px",
 });
 
-export default function Playlists({ playlists }: Props) {
+export default function ({ playlists }: Props) {
   return (
     <nav>
       {playlists.map(({ id, owner, urls, title, description }) => {

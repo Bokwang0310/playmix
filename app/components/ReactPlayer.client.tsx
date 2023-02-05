@@ -1,11 +1,11 @@
 import ReactPlayer from "react-player";
 
-type Props = {
+export type Props = {
   url: string;
   handleEnded: () => void;
 };
 
-export default function Player({ url, handleEnded }: Props) {
+export default function ({ url, handleEnded }: Props) {
   return (
     <ReactPlayer
       url={url + "&origin=http://localhost:3000"}

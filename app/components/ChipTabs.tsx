@@ -17,15 +17,15 @@ const ChipTab = styled(Tab)({
   fontFamily: "Roboto",
 });
 
+// TODO: 각 link마다 yt data api로 영상 제목을 받아와서 chip의 label로 사용
+// 또는 사용자에게 곡 이름을 입력하도록?
+
 type Props = {
   urls: string[];
   currentIndex: number;
 };
 
-// TODO: 각 link마다 yt data api로 영상 제목을 받아와서 chip의 label로 사용
-// 또는 사용자에게 곡 이름을 입력하도록?
-
-export default function Chips({ urls, currentIndex }: Props) {
+export default function ({ urls, currentIndex }: Props) {
   return (
     <nav>
       <Tabs

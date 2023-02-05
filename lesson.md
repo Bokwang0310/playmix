@@ -145,3 +145,49 @@ streaming SSR과 css-in-js를 함께 사용할 수 있는 방법이 있긴 한 �
 하지만 nth child와 같은 선택자를 이용하는 경우에는 `default approach`가 불가능하며 streaming SSR을 이용하지 못하는 `advanced approach`만 이용 가능하다고 한다.
 
 그런데 역시나 MUI에서는 emotion의 `advanced approach`가 필요하다고 한다. [참고](https://github.com/mui/material-ui/issues/33280)
+
+# ES 모듈에 관한 의문
+
+```jsx
+export default function App() {
+  return <>Hello</>;
+}
+```
+
+이렇게 무언가를 default export 할 때, import 하는 방법은 여러가지가 있다.
+
+```jsx
+import App from "./App";
+```
+
+```jsx
+import { default as App } from "./App";
+```
+
+둘의 차이는 뭘까
+
+그리고 위의 경우에는 default export 하는 대상에 이름을 붙여줄 필요가 없고, 이름을 붙였더라도 import 하는 쪽에서 이름을 마음대로 붙여 이용할 수 있다.
+
+그런데 대부분의 리액트 예시를 보면 default export 하는 컴포넌트에 자꾸 이름을 붙인다.
+
+이렇게 되면 파일 이름은 바꾸고 컴포넌트 이름은 바꾸지 않아도 전혀 에러가 나지 않아 묻혀버리는 경우가 많다.
+
+꼭 컴포넌트 이름 바꾸는 것을 잊어버리는 것만이 문제가 아니라, 그냥 파일 이름도 바꾸고 컴포넌트 이름도 바꾸는 것 자체가 낭비인 것 같다.
+
+도대체 왜 수많은 리액트 튜토리얼은 이런 관행을 따르는 것일까.
+
+```jsx
+function App() {
+  return <>Hello</>;
+}
+
+export default App;
+```
+
+> export 구문을 떨어뜨려 놓을 필요도 없고 컴포넌트에 이름을 붙여줄 필요도 없다.
+
+사실, default export 자체가 이상하다고 생각하지만, 이 기능은 commonjs 때문에 만들어질 수밖에 없다는 얘기를 들은거 같긴 하다.
+
+일단 난 귀찮으니까 모든 default export 컴포넌트의 이름을 지우기로 했다.
+
+... 지우고 보니까 좀 밋밋하긴하네

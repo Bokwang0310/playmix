@@ -28,5 +28,7 @@ const playlists: Playlist[] = [
   },
 ];
 
+export const tempPlaylist = playlists[0];
+
 export const getPlaylists = async () =>
   new Promise<Playlist[]>((resolve) => resolve(playlists));

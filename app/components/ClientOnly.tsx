@@ -6,6 +6,6 @@ type Props = {
   fallback?: ReactNode;
 };
 
-export default function ClientOnly({ children, fallback = null }: Props) {
+export default function ({ children, fallback = null }: Props) {
   return useHydrated() ? <>{children()}</> : <>{fallback}</>;
 }

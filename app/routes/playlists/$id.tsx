@@ -3,27 +3,10 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { styled } from "@mui/material/styles";
-import Skeleton from "@mui/material/Skeleton";
-
-import Player from "~/components/Player.client";
+import Player from "~/components/Player";
 import ChipTabs from "~/components/ChipTabs";
 import Playlists from "~/components/Playlists";
-import ClientOnly from "~/components/ClientOnly";
-import { getPlaylists } from "~/lib/api";
-
-const tempPlaylist = {
-  id: "025jpHTOHR5Mqs_lwOdOr",
-  owner: "개죽이",
-  urls: [
-    "https://youtu.be/M2k4mNy61XI",
-    "https://youtu.be/w4iQ7nWO6SM",
-    "https://youtu.be/ooZA5ONfUJE",
-    "https://youtu.be/LwtgRAge4B4",
-  ],
-  title: "검정치마의 여름",
-  description: "밝고 짧게 타올라라",
-};
+import { getPlaylists, tempPlaylist } from "~/lib/api";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const playlists = await getPlaylists();
@@ -38,43 +21,23 @@ export const loader = async ({ params }: LoaderArgs) => {
   });
 };
 
-const PlayerContainer = styled("div")({
-  position: "relative",
-  paddingTop: "56.25%",
-});
-
-const PlayerSkeleton = styled(Skeleton)({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-});
-
-export default function Playlist() {
+export default function () {
   const { playlists, currentPlaylist } = useLoaderData<typeof loader>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const handleEnded = () =>
+    setCurrentIndex((prev) => {
+      // 마지막 곡이 끝나면 처음으로 다시 돌아감
+      if (prev + 2 === playlists.length) return 0;
+      return prev + 1;
+    });
+
   return (
     <>
-      <PlayerContainer>
-        <ClientOnly
-          fallback={<PlayerSkeleton animation="wave" variant="rectangular" />}
-        >
-          {() => (
-            <Player
-              url={currentPlaylist.urls[currentIndex]}
-              handleEnded={() =>
-                setCurrentIndex((prev) => {
-                  // 마지막 곡이 끝나면 처음으로 다시 돌아감
-                  if (prev + 2 === playlists.length) return 0;
-                  return prev + 1;
-                })
-              }
-            />
-          )}
-        </ClientOnly>
-      </PlayerContainer>
+      <Player
+        url={currentPlaylist.urls[currentIndex]}
+        handleEnded={handleEnded}
+      />
       <ChipTabs currentIndex={currentIndex} urls={currentPlaylist.urls} />
       <Playlists playlists={playlists} />
     </>
