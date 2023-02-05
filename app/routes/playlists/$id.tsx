@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { styled } from "@mui/material/styles";
+import Skeleton from "@mui/material/Skeleton";
 
 import Player from "~/components/Player.client";
 import ChipTabs from "~/components/ChipTabs";
@@ -41,13 +42,23 @@ const PlayerContainer = styled("div")({
   paddingTop: "56.25%",
 });
 
+const PlayerSkeleton = styled(Skeleton)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+});
+
 export default function Playlist() {
   const { playlists, currentPlaylist } = useLoaderData<typeof loader>();
 
   return (
     <>
       <PlayerContainer>
-        <ClientOnly>
+        <ClientOnly
+          fallback={<PlayerSkeleton animation="wave" variant="rectangular" />}
+        >
           {() => <Player url={currentPlaylist.links[0]} />}
         </ClientOnly>
       </PlayerContainer>
