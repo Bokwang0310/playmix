@@ -4,6 +4,8 @@ import { json } from "@remix-run/node";
 import { getPlaylists } from "~/lib/api";
 
 import Playlists from "~/components/Playlists";
+import { Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 export const loader = async () => {
   const playLists = await getPlaylists();
@@ -14,5 +16,12 @@ export const loader = async () => {
 export default function () {
   const playlists = useLoaderData<typeof loader>();
 
-  return <Playlists playlists={playlists} />;
+  return (
+    <>
+      <Playlists playlists={playlists} />
+      <Fab sx={{ position: "absolute", bottom: 16, right: 16 }}>
+        <AddIcon />
+      </Fab>
+    </>
+  );
 }

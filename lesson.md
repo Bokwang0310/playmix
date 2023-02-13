@@ -191,3 +191,17 @@ export default App;
 일단 난 귀찮으니까 모든 default export 컴포넌트의 이름을 지우기로 했다.
 
 ... 지우고 보니까 좀 밋밋하긴하네
+
+# `@mui/icons-material` 사용시 에러
+
+icon 이용을 위해 해당 패키지를 설치하고 Fab 안에 AddIcon을 추가하는 것까지는 문제가 없었지만 `routes/create.tsx`를 만들고 `/create`로 접속하니 이런 에러가 떴다.
+
+```
+TypeError: "useEnhancedEffect_default" is not a function
+```
+
+`node_modules` 지우고 다시 깔기도 해봤지만 소용 없음
+
+Fab을 임포트 하는 방식을 바꾸니까 에러가 사라졌다. [참고](https://github.com/mui/material-ui/issues/31835#issuecomment-1153393901)
+
+모든 mui 컴포넌트의 임포트 방식을 다 바꾸는 것도 아니고 아이콘이 쓰이는 Fab의 임포트만 바꾸는 것으로 해결된다는 점도 이상하고 Fab은 루트에서 쓰이는데 `/create`만 들어가면 에러가 발생한다는 점도 이상하다
