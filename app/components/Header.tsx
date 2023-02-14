@@ -1,12 +1,32 @@
+import { ReactNode } from "react";
+import { useNavigate } from "@remix-run/react";
+
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
-import CloseIcon from "@mui/icons-material/Close";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+// 랑크를 받아 페이지를 바로 이동시킬 수도 있고 구체적인 핸들링 함수를 받을 수도 있다.
+type Props = {
+  title: string;
+  leftIcon: ReactNode;
+  rightIcon: ReactNode;
+  leftLink?: string;
+  rightLink?: string;
+  leftOnClick?: () => void;
+  rightOnClick?: () => void;
+};
 
-export default function () {
+export default function ({
+  title,
+  leftIcon,
+  rightIcon,
+  leftLink,
+  rightLink,
+  leftOnClick,
+  rightOnClick,
+}: Props) {
+  const navigate = useNavigate();
   return (
     <AppBar position="sticky">
       <Toolbar>
@@ -14,16 +34,19 @@ export default function () {
           size="large"
           edge="start"
           color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
+          sx={{ marginRight: 2 }}
+          onClick={leftLink ? () => navigate(leftLink) : leftOnClick}
         >
-          <CloseIcon />
+          {leftIcon}
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Create
+          {title}
         </Typography>
-        <IconButton color="inherit">
-          <ArrowForwardIosIcon />
+        <IconButton
+          color="inherit"
+          onClick={rightLink ? () => navigate(rightLink) : rightOnClick}
+        >
+          {rightIcon}
         </IconButton>
       </Toolbar>
     </AppBar>

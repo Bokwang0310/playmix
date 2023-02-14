@@ -17,7 +17,7 @@ const PlayerSkeleton = styled(Skeleton)({
   height: "100%",
 });
 
-// Player 안에 PlayerContainer가 있는건...
+// Player 안에 PlayerContainer가 있는건 이상하다
 // react-player를 여기서 임포트하지 못하기 때문에 ReactPlayer라는 쓸데없는 중간자를 만들어야 함
 
 export default function ({ url, handleEnded }: Props) {

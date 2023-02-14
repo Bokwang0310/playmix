@@ -7,6 +7,8 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import Header from "~/components/Header";
 
@@ -15,7 +17,13 @@ export default function () {
 
   return (
     <main>
-      <Header />
+      <Header
+        title="Create"
+        leftIcon={<CloseIcon />}
+        rightIcon={<ArrowForwardIosIcon />}
+        leftLink="/"
+        rightOnClick={() => {}}
+      />
       <List subheader={<ListSubheader>General Setting</ListSubheader>}>
         <ListItem>
           <TextField

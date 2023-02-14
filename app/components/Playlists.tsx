@@ -21,8 +21,8 @@ const Image = styled("img")({
 export default function ({ playlists }: Props) {
   return (
     <nav>
-      {playlists.map(({ id, owner, urls, title, description }) => {
-        const thumbnail = getYoutubeThumbnailFromUrl(urls[0]);
+      {playlists.map(({ id, owner, musics, title, description }) => {
+        const thumbnail = getYoutubeThumbnailFromUrl(musics[0].url);
         return (
           <List sx={{ width: "100%", bgcolor: "background.paper" }} key={id}>
             <ListItemButton

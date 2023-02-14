@@ -35,10 +35,10 @@ export default function () {
   return (
     <>
       <Player
-        url={currentPlaylist.urls[currentIndex]}
+        url={currentPlaylist.musics[currentIndex].url}
         handleEnded={handleEnded}
       />
-      <ChipTabs currentIndex={currentIndex} urls={currentPlaylist.urls} />
+      <ChipTabs currentIndex={currentIndex} musics={currentPlaylist.musics} />
       <Playlists playlists={playlists} />
     </>
   );
