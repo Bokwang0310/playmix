@@ -4,11 +4,12 @@
 
 [벨로퍼트님의 Remix 튜토리얼](https://velog.io/@velopert/learn-remix#42-url-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0)에서는 `useParams` 훅을 이용해 `params`를 가져오는 반면, [Remix 공식 가이드에서는](https://remix.run/docs/en/v1/guides/data-loading#route-params) `LoaderArgs` 타입의 객체를 입력으로 받는 `loader` 함수를 이용하여 `params`를 가져온다. 그리고 [Remix 공식 Blog 튜토리얼](https://remix.run/docs/en/v1/tutorials/blog#dynamic-route-params)에서도 공식 가이드와 같은 방법을 이용한다.
 
-처음에는 무슨 차이인지 몰랐는데, 고민하다보니 서버 통신에 `params`를 이용하느냐 하지 않느냐의 차이라는 것을 알게되었다.
+처음에는 무슨 차이인지 몰랐는데, 생각하다보니 `params`를 서버 통신에 이용하느냐 하지 않느냐의 차이라는 것을 알게되었다.
 
 ```tsx
 // app/routes/items/$itemId.tsx
 // Example for useParams()
+
 import { useParams } from "@remix-run/react";
 
 export default function Item() {
@@ -17,18 +18,19 @@ export default function Item() {
 }
 ```
 
-> `params`가 오직 UI를 보여주는 데에만 쓰인다!
+> `params`가 오직 UI를 보여주는 데에만 쓰인다.
 
 ```tsx
 // app/routes/items/$itemId.tsx
 // Example for loader function
+
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getDataFromDB } from "../../lib/api";
+import { getDataFromDB } from "~/lib/api";
 
 export const loader = async ({ params }: LoaderArgs) => {
-  const data = await getDataFromDB(params.itemId); // 서버 통신에 params가 쓰인다
+  const data = await getDataFromDB(params.itemId); // params를 서버 통신에 이용한다.
   return json(data);
 };
 
@@ -46,7 +48,7 @@ next.js에서는 `params`를 어떻게 처리할지 궁금하지만 귀찮으니
 
 # React Hydration Error
 
-[이전 프로젝트](https://github.com/Bokwang0310/fifty-hertz)에서 사용한 적이 있는 [`react-player`](https://github.com/cookpete/react-player)를 이번에도 음악 재생을 위해 사용할 생각이었다. 그런데 일반 리액트 패키지를(심지어 UI에 직접적으로 관여하는 패키지를) remix에 바로 적용해도 되는지 의문이 생겼고 검색을 해보다가 [next.js에서의 `react-player`에 관한 이슈](https://github.com/cookpete/react-player/issues/1474#issuecomment-1184645105)를 찾을 수 있었다.
+[이전 프로젝트](https://github.com/Bokwang0310/fifty-hertz)에서 사용한 적이 있는 [`react-player`](https://github.com/cookpete/react-player)를 이번에도 사용할 생각이었다. 그런데 일반 리액트 패키지를 remix에 바로 적용해도 되는지 의문이 생겼고 검색을 해보다가 [next.js에서의 `react-player` 관련 이슈](https://github.com/cookpete/react-player/issues/1474#issuecomment-1184645105)를 찾을 수 있었다.
 
 해당 이슈는 [React Hydration Error](https://nextjs.org/docs/messages/react-hydration-error)와 관련되어 있었고 이 에러의 원인은 다음과 같다.
 
@@ -54,7 +56,7 @@ SSR을 위한 pre-rendered React tree와 Hydration 과정에서 생성되는 Rea
 
 [해당 이슈의 한 코멘트](https://github.com/cookpete/react-player/issues/1474#issuecomment-1186878393)에 따르면 `react-player`에서 `window`를 참조하는 부분에 대해 `react-player`를 수정해야 한다고 한다.
 
-일단, 해당 이슈는 remix가 아니라 next.js의 것이기도 하고 그 사이에 이슈가 해결되었을 수도 있으므로.. 내 프로젝트에서 `react-player`를 적용해 보기로 했다.
+일단, remix가 아니라 next.js의 이슈이기도 하고 그 사이에 문제가 해결되었을 수도 있으므로.. 내 프로젝트에서 `react-player`를 적용해 보기로 했다.
 
 적용해 본 결과, Hydration Error가 아니라 다른 에러가 발생했다:
 
@@ -80,9 +82,9 @@ Uncaught Error: There was an error while hydrating. Because the error happened o
 
 아무튼 서버 사이드 트리와 클라이언트 트리가 일치하지 않아서 생기는 것 같다.
 
-[해당 이슈글의 코멘트](https://github.com/cookpete/react-player/issues/1474#issuecomment-1184645105)에서는 `next/dynamic`으로부터 `dynamic` 함수를 임포트하고 그걸 이용해 `react-player/lazy`를 동적 임포트하면 해결할 수 있다고 한다.
+[해당 이슈글의 코멘트](https://github.com/cookpete/react-player/issues/1474#issuecomment-1184645105)에서는 `next/dynamic`을 이용해 `react-player/lazy`를 동적 임포트하면 해결할 수 있다고 한다.
 
-그런데, 아무리 찾아봐도 remix에서는 next.js의 `dynamic`과 같은 API를 찾을 수 없었다. 동적 임포트를 이용해야 한다는 (잘못된) 믿음을 가지고 `react-player/lazy`와 `React.lazy`, `React.Suspense`를 이용해 보기도 하고 [모듈 사이드이펙트 관련 remix 공식 문서](https://remix.run/docs/en/v1/guides/constraints#module-constraints)를 정독하였지만 답을 찾지 못했다.
+그런데, 아무리 찾아봐도 remix에서는 next.js의 `dynamic`과 같은 API를 찾을 수 없었다. 동적 임포트를 이용해야 한다는 잘못된 믿음으로 `react-player/lazy`와 `React.lazy`, `React.Suspense`를 이용해 보기도 하고 [모듈 사이드이펙트 관련 remix 공식 문서](https://remix.run/docs/en/v1/guides/constraints#module-constraints)를 정독했지만 답을 찾지 못했다.
 
 그러던중, [`useState`와 `useEffect`를 활용한 `ClientOnly` 컴포넌트 관련 글](https://github.com/remix-run/remix/discussions/2936#discussioncomment-2602182)과 [`.client.tsx`와 `ClientOnly`에 관한 글](https://github.com/remix-run/remix/discussions/1023)로부터 답을 찾았다.
 
@@ -154,7 +156,7 @@ export default function App() {
 }
 ```
 
-이렇게 무언가를 default export 할 때, import 하는 방법은 여러가지가 있다.
+이렇게 무언가를 `default export` 할 때, `import` 하는 방법은 여러가지가 있다.
 
 ```jsx
 import App from "./App";
@@ -166,9 +168,9 @@ import { default as App } from "./App";
 
 둘의 차이는 뭘까
 
-그리고 위의 경우에는 default export 하는 대상에 이름을 붙여줄 필요가 없고, 이름을 붙였더라도 import 하는 쪽에서 이름을 마음대로 붙여 이용할 수 있다.
+그리고 위의 경우에는 `default export` 하는 대상에 이름을 붙여줄 필요가 없고, 이름을 붙였더라도 `import` 하는 쪽에서 이름을 마음대로 붙여 이용할 수 있다.
 
-그런데 대부분의 리액트 예시를 보면 default export 하는 컴포넌트에 자꾸 이름을 붙인다.
+그런데 대부분의 리액트 예시를 보면 `default export` 하는 컴포넌트에 자꾸 이름을 붙인다.
 
 이렇게 되면 파일 이름은 바꾸고 컴포넌트 이름은 바꾸지 않아도 전혀 에러가 나지 않아 묻혀버리는 경우가 많다.
 
@@ -184,17 +186,15 @@ function App() {
 export default App;
 ```
 
-> export 구문을 떨어뜨려 놓을 필요도 없고 컴포넌트에 이름을 붙여줄 필요도 없다.
+> `export` 구문을 떨어뜨려 놓을 필요도 없고 컴포넌트에 이름을 붙여줄 필요도 없다.
 
-사실, default export 자체가 이상하다고 생각하지만, 이 기능은 commonjs 때문에 만들어질 수밖에 없다는 얘기를 들은거 같긴 하다.
+사실, `default export` 자체가 이상하다고 생각하지만, 이 기능은 commonjs 때문에 만들어질 수밖에 없다는 얘기를 들은거 같긴 하다.
 
-일단 난 귀찮으니까 모든 default export 컴포넌트의 이름을 지우기로 했다.
-
-... 지우고 보니까 좀 밋밋하긴하네
+일단 난 귀찮으니까 모든 `default export` 컴포넌트의 이름을 지우기로 했다.
 
 # `@mui/icons-material` 사용시 에러
 
-icon 이용을 위해 해당 패키지를 설치하고 Fab 안에 AddIcon을 추가하는 것까지는 문제가 없었지만 `routes/create.tsx`를 만들고 `/create`로 접속하니 이런 에러가 떴다.
+해당 패키지를 설치하고 `Fab` 안에 `AddIcon`을 추가하는 것까지는 문제가 없었지만 `routes/create.tsx`를 만들고 `/create`로 접속하니 이런 에러가 떴다.
 
 ```
 TypeError: "useEnhancedEffect_default" is not a function
@@ -202,6 +202,18 @@ TypeError: "useEnhancedEffect_default" is not a function
 
 `node_modules` 지우고 다시 깔기도 해봤지만 소용 없음
 
-Fab을 임포트 하는 방식을 바꾸니까 에러가 사라졌다. [참고](https://github.com/mui/material-ui/issues/31835#issuecomment-1153393901)
+`Fab`을 임포트 하는 방식을 바꾸니까 에러가 사라졌다. [참고](https://github.com/mui/material-ui/issues/31835#issuecomment-1153393901)
 
-모든 mui 컴포넌트의 임포트 방식을 다 바꾸는 것도 아니고 아이콘이 쓰이는 Fab의 임포트만 바꾸는 것으로 해결된다는 점도 이상하고 Fab은 루트에서 쓰이는데 `/create`만 들어가면 에러가 발생한다는 점도 이상하다
+모든 MUI 컴포넌트의 임포트 방식을 다 바꾸는 것도 아니고 아이콘이 쓰이는 `Fab`의 임포트만 바꾸는 것으로 해결된다는 점도 이상하고 `Fab`은 루트에서 쓰이는데 `/create`만 들어가면 에러가 발생한다는 점도 이상하다
+
+# 다른 `params`의 페이지로 이동할 때 상태가 보존되는 문제
+
+`/playlists/$id` 구조의 url을 쓸 때 두 플레이리스트가 가지고 있는 음악의 개수가 다르면 발생하는 문제가 있었다.
+
+예를 들어, 4번째 곡을 재생하고 있는 플리 `A`에서 곡이 두 개 밖에 없는 플리 `B`로 이동하면 `A`에서 3이었던 `currentIndex`라는 이름의 상태가 페이지 전환에 초기화되지 않아서 플리 `B`에서도 4번째 곡을 참조하려고 하고, 결국 에러를 뿜어내는 것이었다.
+
+`useEffect`로 `id`가 바뀌면 `currentIndex`를 0으로 초기화하는 로직을 추가해 봤지만 소용이 없었고 옵셔널 체이닝으로 적어도 앱이 죽지는 않게 만들긴 했지만 `ChipTabs` 컴포넌트에 올바르지 않은 `value`를 전해주게 되어 에러를 완전히 없애지는 못했다.
+
+생각 끝에 애초에 음악 순서를 상태로 관리하는 것 자체부터가 잘못되었다고 판단했고, `playlistId`와 `musicIndex` 두 개의 `params`를 이용하기로 했다.
+
+상태 초기화 문제는 해결하지 못했지만 결과적으로 더 직관적이고 효율적인 구조를 갖게 된 것 같다.

@@ -10,13 +10,13 @@ import { styled } from "@mui/material/styles";
 import { getYoutubeThumbnailFromUrl } from "~/lib/utils";
 import { Playlist } from "~/lib/api";
 
-type Props = {
-  playlists: Playlist[];
-};
-
 const Image = styled("img")({
   paddingRight: "8px",
 });
+
+type Props = {
+  playlists: Playlist[];
+};
 
 export default function ({ playlists }: Props) {
   return (

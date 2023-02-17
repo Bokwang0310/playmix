@@ -9,14 +9,13 @@ import Header from "~/components/Header";
 import { getPlaylists } from "~/lib/api";
 
 export const loader = async () => {
-  const playLists = await getPlaylists();
   // console.log(process.env.YT_DATA_API_KEY);
-  return json(playLists);
+  const playlists = await getPlaylists();
+  return json({ playlists });
 };
 
 export default function () {
-  const playlists = useLoaderData<typeof loader>();
-
+  const { playlists } = useLoaderData<typeof loader>();
   return (
     <>
       <Header

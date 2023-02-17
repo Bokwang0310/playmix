@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
-// 랑크를 받아 페이지를 바로 이동시킬 수도 있고 구체적인 핸들링 함수를 받을 수도 있다.
+// 랑크를 받아 페이지를 바로 이동시키거나 함수를 받을 수도 있다.
 type Props = {
   title: string;
   leftIcon: ReactNode;

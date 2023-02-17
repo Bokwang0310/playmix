@@ -20,17 +20,15 @@ const ChipTab = styled(Tab)({
 
 type Props = {
   musics: Music[];
-  currentIndex: number;
-  onClick: (index: number) => void;
+  value: number;
+  onChangeWithValue: (index: number) => void;
 };
 
-// TODO: Chip 클릭시 해당 음악으로 변경
-
-export default function ({ musics, currentIndex, onClick }: Props) {
+export default function ({ musics, value, onChangeWithValue }: Props) {
   return (
     <nav>
       <Tabs
-        value={currentIndex}
+        value={value}
         variant="scrollable"
         scrollButtons="auto"
         sx={{
@@ -38,15 +36,11 @@ export default function ({ musics, currentIndex, onClick }: Props) {
           minHeight: "0px",
           padding: "16px 16px 0px 16px",
         }}
-        // onChange={(_, value) => setValue(value)}
         TabIndicatorProps={{ hidden: true }}
+        onChange={(_, value) => onChangeWithValue(value)}
       >
         {musics.map(({ title, url }, index) => (
-          <ChipTab
-            key={getYoutubeVideoIdFromUrl(url)}
-            label={title}
-            onClick={() => onClick(index)}
-          />
+          <ChipTab key={getYoutubeVideoIdFromUrl(url)} label={title} />
         ))}
       </Tabs>
     </nav>
