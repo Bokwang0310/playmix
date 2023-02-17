@@ -28,7 +28,7 @@ export default function ({ playlists }: Props) {
             <ListItemButton
               alignItems="flex-start"
               component={Link}
-              to={`/playlists/${id}`}
+              to={`/playlists/${id}/0`}
             >
               <Image
                 src={`${thumbnail}?&fit=crop&auto=format&dpr=2`}
