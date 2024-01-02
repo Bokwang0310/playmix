@@ -50,15 +50,17 @@ export async function action({ request }: ActionArgs) {
     })),
   };
 
-  if (Object.values(formErrors).some(Boolean))
+  // formErrors에 에러 하나라도 있으면 조건식이 참으로 평가된다
+  if (Object.values(formErrors).flat().some(Boolean))
     return json({ formErrors, data });
 
+  console.log(data);
   return redirect("/create");
 }
 
 export default function () {
   // 플레이리스트에 넣으려는 음악의 개수
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(1);
   const submit = useSubmit();
   const formRef = useRef<HTMLFormElement>(null);
   const actionData = useActionData<typeof action>();

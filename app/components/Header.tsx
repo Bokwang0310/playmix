@@ -35,7 +35,7 @@ export default function ({
           edge="start"
           color="inherit"
           sx={{ marginRight: 2 }}
-          onClick={leftLink ? () => navigate(leftLink) : leftOnClick}
+          onClick={leftLink ? () => window.open(leftLink) : leftOnClick}
         >
           {leftIcon}
         </IconButton>
